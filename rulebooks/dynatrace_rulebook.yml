@@ -1,15 +1,15 @@
 ---
-- name: Test Dynatrace Rulebook
-  hosts: localhost
-  sources:
-    - name: dynatrace_webhook
-      source: ansible.eda.webhook
-      args:
+name: Test Dynatrace Rulebook
+hosts: localhost
+sources:
+  - name: dynatrace_webhook
+    source: ansible.eda.webhook
+    args:
         port: 5000
-  rules:
-    - name: Debug Event
-      condition: event is defined
-      action:
-        debug:
-          msg: "Received Dynatrace alert: {{ event }}"
+rules:
+  - name: Debug Event
+    condition: event is defined
+    action:
+      debug:
+        msg: "Received Dynatrace alert: {{ event }}"
 
