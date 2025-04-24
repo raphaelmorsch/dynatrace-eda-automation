@@ -1,8 +1,5 @@
 - name: Restart IIS Server
-  hosts: windows_nodes
-  gather_facts: false
+  hosts: localhost
   tasks:
-    - name: Restart IIS service
-      ansible.windows.win_service:
-        name: W3SVC
-        state: restarted
+    - debug:
+        msg: "Stub IIS restart"
