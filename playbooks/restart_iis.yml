@@ -1,0 +1,8 @@
+- name: Restart IIS Server
+  hosts: windows_nodes
+  gather_facts: false
+  tasks:
+    - name: Restart IIS service
+      ansible.windows.win_service:
+        name: W3SVC
+        state: restarted
