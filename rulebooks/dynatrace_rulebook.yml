@@ -1,23 +1,24 @@
-name: Dynatrace Alert Handling
-hosts: localhost
-sources:
-  - name: dynatrace_webhook
-    source: webhook
-    args:
-      port: 5000
-rules:
-  - name: Restart IIS Server on alert
-    condition: event.title contains "Restart IIS"
-    action:
-      run_playbook:
-        name: playbooks/restart_iis.yml
-  - name: Check IIS Lifetime
-    condition: event.title contains "Check IIS Lifetime"
-    action:
-      run_playbook:
-        name: playbooks/check_iis_lifetime.yml
-  - name: WebSphere OOM Restart
-    condition: event.description contains "OutOfMemoryError"
-    action:
-      run_playbook:
-        name: playbooks/restart_websphere.yml
+---
+- name: Dynatrace Alert Handling
+  hosts: localhost
+  sources:
+    - name: dynatrace_webhook
+      source: webhook
+      args:
+        port: 5000
+  rules:
+    - name: Restart IIS Server on alert
+      condition: event.title contains "Restart IIS"
+      action:
+        run_playbook:
+          name: playbooks/restart_iis.yml  
+    - name: Check IIS Lifetime
+      condition: event.title contains "Check IIS Lifetime"
+      action:
+        run_playbook:
+          name: playbooks/check_iis_lifetime.yml  
+    - name: WebSphere OOM Restart
+      condition: event.description contains "OutOfMemoryError"
+      action:
+        run_playbook:
+          name: playbooks/restart_websphere.yml
