@@ -3,9 +3,9 @@
   hosts: localhost
   sources:
     - name: dynatrace_webhook
-      source: 
-        ansible.eda.webhook:
-          port: 5000
+      source: ansible.eda.webhook:
+      args:
+        port: 5000
   rules:
     - name: Debug Event
       condition: event is defined
