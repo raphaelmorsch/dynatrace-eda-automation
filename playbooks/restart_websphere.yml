@@ -1,0 +1,9 @@
+- name: Restart WebSphere Application Server
+  hosts: websphere_servers
+  become: yes
+  tasks:
+    - name: Stop WebSphere
+      shell: /opt/IBM/WebSphere/AppServer/bin/stopServer.sh server1 -username admin -password pass
+
+    - name: Start WebSphere
+      shell: /opt/IBM/WebSphere/AppServer/bin/startServer.sh server1
