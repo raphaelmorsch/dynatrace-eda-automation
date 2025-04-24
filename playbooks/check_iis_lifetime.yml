@@ -1,12 +1,5 @@
 - name: Check IIS Server Lifetime
-  hosts: windows_nodes
-  gather_facts: true
+  hosts: localhost
   tasks:
-    - name: Print system uptime
-      win_shell: |
-        (get-date) - (gcim Win32_OperatingSystem).LastBootUpTime
-      register: uptime
-
-    - name: Display uptime
-      debug:
-        msg: "IIS server uptime is: {{ uptime.stdout }}"
+    - debug:
+        msg: "Stub IIS restart"
