@@ -1,5 +1,20 @@
-- name: Restart WebSphere Application Server
-  hosts: localhost
+- name: Restart WebSphere Liberty via SSH
+  hosts: websphere
+  become: yes
   tasks:
-    - debug:
-        msg: "Stub IIS restart"
+    - name: Restart WebSphere Liberty service
+      ansible.builtin.shell: |
+        systemctl restart websphere
+      args:
+        executable: /bin/bash
+
+    - name: Wait for WebSphere to be reachable again
+      ansible.builtin.uri:
+        url: https://websphere-liberty-websphere-liberty.apps.cluster-vc57m-1.dynamic.redhatworkshops.io
+        method: GET
+        validate_certs: false
+        status_code: 200
+      register: result
+      until: result.status == 200
+      retries: 10
+      delay: 6
