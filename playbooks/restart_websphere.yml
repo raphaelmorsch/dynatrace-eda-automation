@@ -1,20 +1,21 @@
-- name: Restart WebSphere Liberty via SSH
+- name: Restart WebSphere Liberty inside pod
   hosts: websphere
-  become: yes
+  gather_facts: false
   tasks:
-    - name: Restart WebSphere Liberty service
-      ansible.builtin.shell: |
-        systemctl restart websphere
-      args:
-        executable: /bin/bash
+    - name: Find WebSphere Liberty pod
+      kubernetes.core.k8s_info:
+        kind: Pod
+        namespace: websphere-liberty
+        label_selectors:
+          - app=websphere-liberty
+      register: pods
 
-    - name: Wait for WebSphere to be reachable again
-      ansible.builtin.uri:
-        url: https://websphere-liberty-websphere-liberty.apps.cluster-vc57m-1.dynamic.redhatworkshops.io
-        method: GET
-        validate_certs: false
-        status_code: 200
-      register: result
-      until: result.status == 200
-      retries: 10
-      delay: 6
+    - name: Restart WebSphere Liberty inside pod
+      kubernetes.core.k8s_exec:
+        namespace: websphere-liberty
+        pod: "{{ pods.resources[0].metadata.name }}"
+        command:
+          - /bin/bash
+          - -c
+          - >
+            /opt/ibm/wlp/bin/server stop defaultServer && sleep 3 && /opt/ibm/wlp/bin/server start defaultServer
