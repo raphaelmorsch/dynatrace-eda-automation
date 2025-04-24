@@ -7,7 +7,7 @@
         port: 5000
   rules:
     - name: Debug Event
-      condition: event is defined
+      condition: event.payload.message == "Ansible is super cool"
       action:
         debug:
           msg: "Received Dynatrace alert: {{ event }}"
