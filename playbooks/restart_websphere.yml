@@ -1,6 +1,6 @@
 ---
 - name: Execute command to restart WebSphere Liberty pod
-  hosts: localhost
+  hosts: websphere
   tasks:
     - name: Find WebSphere Liberty pod
       kubernetes.core.k8s_info:
