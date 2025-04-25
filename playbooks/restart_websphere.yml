@@ -1,19 +1,23 @@
 ---
-- name: Execute command to restart WebSphere Liberty pod
-  hosts: websphere
+- name: Debug WebSphere Liberty restart in pod
+  hosts: localhost
+  gather_facts: false
+
   tasks:
     - name: Find WebSphere Liberty pod
       kubernetes.core.k8s_info:
         kind: Pod
-        namespace: default  # replace with your namespace
-        label_selectors:
-          - app=websphere-liberty  # replace with the label of your WebSphere pod
+        namespace: websphere-liberty  # Replace with your namespace
       register: websphere_pod
+
+    - name: Debug the pod info
+      debug:
+        var: websphere_pod
 
     - name: Restart WebSphere Liberty server in the pod
       kubernetes.core.k8s_exec:
         pod: "{{ websphere_pod.resources[0].metadata.name }}"
-        namespace: websphere-liberty  # replace with your namespace
+        namespace: websphere-liberty  # Replace with your namespace
         cmd:
           - "/bin/sh"
           - "-c"
