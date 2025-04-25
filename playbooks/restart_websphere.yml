@@ -19,9 +19,7 @@
         pod: "{{ websphere_pod.resources[0].metadata.name }}"
         namespace: websphere-liberty  # Replace with your namespace
         command:
-          - "/bin/sh"
-          - "-c"
-          - |
-            /opt/ibm/wlp/bin/server stop defaultServer && \
-            /opt/ibm/wlp/bin/server start defaultServer
+          - /bin/sh
+          - -c
+          - /opt/ibm/wlp/bin/server stop defaultServer && /opt/ibm/wlp/bin/server start defaultServer
       when: websphere_pod.resources | length > 0
