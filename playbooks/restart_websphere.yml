@@ -1,5 +1,5 @@
 ---
-- name: Execute command in WebSphere Liberty pod
+- name: Execute command to restart WebSphere Liberty pod
   hosts: localhost
   tasks:
     - name: Find WebSphere Liberty pod
@@ -7,12 +7,17 @@
         kind: Pod
         namespace: default  # replace with your namespace
         label_selectors:
-          app: websphere-liberty  # replace with the label of your WebSphere pod
+          - app=websphere-liberty  # replace with the label of your WebSphere pod
       register: websphere_pod
 
-    - name: Exec into the WebSphere Liberty pod
+    - name: Restart WebSphere Liberty server in the pod
       kubernetes.core.k8s_exec:
         pod: "{{ websphere_pod.resources[0].metadata.name }}"
         namespace: default  # replace with your namespace
-        cmd: ["/bin/sh", "-c", "your-command-here"]  # replace with the actual command you want to run
+        cmd:
+          - "/bin/sh"
+          - "-c"
+          - |
+            /opt/ibm/wlp/bin/server stop defaultServer && \
+            /opt/ibm/wlp/bin/server start defaultServer
       when: websphere_pod.resources | length > 0
